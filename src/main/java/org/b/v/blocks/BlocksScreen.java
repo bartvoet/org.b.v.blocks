@@ -58,9 +58,6 @@ public class BlocksScreen {
 		menuBar.add(menu);
 	}
 	
-	private static List<SwingBlock> buttons = new ArrayList<SwingBlock>();
-	private static Map<Integer,SwingBlock> blocks = new TreeMap<Integer,SwingBlock>();
-	
 	private static JFrame frame;
 	
     private static void drawBlock(int id,int x,int y,int width,int height) {
