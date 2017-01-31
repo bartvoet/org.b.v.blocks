@@ -20,10 +20,10 @@ import javax.swing.JMenuItem;
 
 public class BlocksScreen {
 	
-	private static class Block {
+	private static class SwingBlock {
 		private JButton button;
 		
-		Block(final int id) {
+		SwingBlock(final int id) {
 			this.button = new JButton("");
 			this.button.addActionListener(new ActionListener() {
 				@Override
@@ -58,13 +58,13 @@ public class BlocksScreen {
 		menuBar.add(menu);
 	}
 	
-	private static List<Block> buttons = new ArrayList<Block>();
-	private static Map<Integer,Block> blocks = new TreeMap<Integer,Block>();
+	private static List<SwingBlock> buttons = new ArrayList<SwingBlock>();
+	private static Map<Integer,SwingBlock> blocks = new TreeMap<Integer,SwingBlock>();
 	
 	private static JFrame frame;
 	
     private static void drawBlock(int id,int x,int y,int width,int height) {
-    	Block block = new Block(id);
+    	SwingBlock block = new SwingBlock(id);
     	frame.getContentPane().add(block.button());
     	Insets insets = frame.getInsets();
     	block.button().setBounds(x + insets.left, y + insets.top,width, height);
