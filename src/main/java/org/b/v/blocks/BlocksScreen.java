@@ -64,7 +64,7 @@ public class BlocksScreen {
 	
 	private static JFrame frame;
 	
-    private static void addBlock(int id,int x,int y,int width,int height) {
+    private static void drawBlock(int id,int x,int y,int width,int height) {
     	Block block = new Block(id);
     	frame.getContentPane().add(block.button());
     	positionBlock(block, x, y, height, width);
@@ -91,7 +91,7 @@ public class BlocksScreen {
         int sizeOfBlock = 50;
         
         for(int i=0;i<8;i++) {
-        	addBlock(i,25 + (i * sizeOfBlock), 5, sizeOfBlock, sizeOfBlock);
+        	drawBlock(i,25 + (i * sizeOfBlock), 5, sizeOfBlock, sizeOfBlock);
         }
 
         //Size and display the window.
