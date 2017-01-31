@@ -32,7 +32,6 @@ public class BlocksScreen {
 					dialog.setSize(new Dimension(200,200));
 					dialog.add(new JLabel("TODO: A menu is to be used here to configue the block"));
 					dialog.setVisible(true);
-					System.out.println("hello" + id);
 				}
 			});
 		}
