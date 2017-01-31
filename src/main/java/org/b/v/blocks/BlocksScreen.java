@@ -30,7 +30,7 @@ public class BlocksScreen {
 				public void actionPerformed(ActionEvent e) {
 					JDialog dialog = new JDialog();
 					dialog.setSize(new Dimension(200,200));
-					dialog.add(new JLabel("TODO: a menu is to be used here to configue the block"));
+					dialog.add(new JLabel("TODO: A menu is to be used here to configue the block"));
 					dialog.setVisible(true);
 					System.out.println("hello" + id);
 				}
@@ -67,13 +67,10 @@ public class BlocksScreen {
     private static void drawBlock(int id,int x,int y,int width,int height) {
     	Block block = new Block(id);
     	frame.getContentPane().add(block.button());
-    	positionBlock(block, x, y, height, width);
+    	Insets insets = frame.getInsets();
+    	block.button().setBounds(x + insets.left, y + insets.top,width, height);
     }
     
-	private static void positionBlock(Block b2, int x,int y,int width,int heigth) {
-		Insets insets = frame.getInsets();
-        b2.button().setBounds(x + insets.left, y + insets.top,width, heigth);
-	}
 
     /**
      * Create the GUI and show it.  For thread safety,
