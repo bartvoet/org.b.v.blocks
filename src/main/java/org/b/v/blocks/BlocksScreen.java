@@ -60,6 +60,27 @@ public class BlocksScreen {
 	
 	private static JFrame frame;
 	
+
+	private BlockRelation firstBlockRelation;
+	
+	enum Orientation {
+		NORTH,SOUTH,EAST,WEST
+	}
+	
+	private class BlockRelation {
+		private int id;
+		private BlockRelation otherBlock;
+	}
+	
+	private  void placeFirstBlock(int id) {
+		firstBlockRelation = new BlockRelation();
+		firstBlockRelation.id = id;
+	}
+	
+	private void setBlock(int id,Orientation orientation, int otherId) {
+		
+	}
+	
     private static void drawBlock(int id,int x,int y,int width,int height) {
     	SwingBlock block = new SwingBlock(id);
     	frame.getContentPane().add(block.button());
