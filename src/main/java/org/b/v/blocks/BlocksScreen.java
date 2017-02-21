@@ -69,7 +69,36 @@ public class BlocksScreen {
 	
 	private class BlockRelation {
 		private int id;
-		private BlockRelation otherBlock;
+		private BlockRelation south,east;
+		
+		public BlockRelation(int id) {
+			this.id = id;
+		}
+		
+		public BlockRelation posBlock(int id, Orientation orientation, int otherId) {
+			if(this.id==otherId) {
+				if(orientation==Orientation.EAST) {
+					this.east=new BlockRelation(id);
+				}
+
+				if(orientation==Orientation.SOUTH) {
+					this.south=new BlockRelation(id);
+				}
+				
+				return null;
+			} else {
+				if(this.south!=null) {
+					this.south = this.south.posBlock(id, orientation, otherId);
+				}
+				if(this.east!=null) {
+					this.east = this.east.posBlock(id, orientation, otherId);
+				}
+				return this;
+			}
+		}
+		
+		
+
 	}
 	
 	private  void placeFirstBlock(int id) {
@@ -78,7 +107,18 @@ public class BlocksScreen {
 	}
 	
 	private void setBlock(int id,Orientation orientation, int otherId) {
+		//principe van een (enkele) linked list...
+		//top is noord-west
+		//navigeren tot dat je overeenkomst vindt...
+		//als het ten noorden is van de block anders recursief werken
 		
+		if(firstBlockRelation.id == otherId 
+				&&  (orientation == Orientation.WEST
+				  || orientation == Orientation.EAST)) {
+			//swap
+		} else {
+			firstBlockRelation.posBlock(id,orientation,otherId);
+		}
 	}
 	
     private static void drawBlock(int id,int x,int y,int width,int height) {
