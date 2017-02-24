@@ -5,10 +5,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -18,7 +14,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-public class BlocksScreen {
+public class BlocksScreen implements BlockPainter {
+	
+	
+	private Block block = new Block(0);
+	
+	public BlocksScreen() {
+		
+	}
 	
 	private static class SwingBlock {
 		private JButton button;
@@ -61,65 +64,6 @@ public class BlocksScreen {
 	private static JFrame frame;
 	
 
-	private BlockRelation firstBlockRelation;
-	
-	enum Orientation {
-		NORTH,SOUTH,EAST,WEST
-	}
-	
-	private class BlockRelation {
-		private int id;
-		private BlockRelation south,east;
-		
-		public BlockRelation(int id) {
-			this.id = id;
-		}
-		
-		public BlockRelation posBlock(int id, Orientation orientation, int otherId) {
-			if(this.id==otherId) {
-				if(orientation==Orientation.EAST) {
-					this.east=new BlockRelation(id);
-				}
-
-				if(orientation==Orientation.SOUTH) {
-					this.south=new BlockRelation(id);
-				}
-				
-				return null;
-			} else {
-				if(this.south!=null) {
-					this.south = this.south.posBlock(id, orientation, otherId);
-				}
-				if(this.east!=null) {
-					this.east = this.east.posBlock(id, orientation, otherId);
-				}
-				return this;
-			}
-		}
-		
-		
-
-	}
-	
-	private  void placeFirstBlock(int id) {
-		firstBlockRelation = new BlockRelation();
-		firstBlockRelation.id = id;
-	}
-	
-	private void setBlock(int id,Orientation orientation, int otherId) {
-		//principe van een (enkele) linked list...
-		//top is noord-west
-		//navigeren tot dat je overeenkomst vindt...
-		//als het ten noorden is van de block anders recursief werken
-		
-		if(firstBlockRelation.id == otherId 
-				&&  (orientation == Orientation.WEST
-				  || orientation == Orientation.EAST)) {
-			//swap
-		} else {
-			firstBlockRelation.posBlock(id,orientation,otherId);
-		}
-	}
 	
     private static void drawBlock(int id,int x,int y,int width,int height) {
     	SwingBlock block = new SwingBlock(id);
@@ -171,4 +115,36 @@ public class BlocksScreen {
             }
         });
     }
+
+    public void drawBlockAtPosition(int id,Position position) {
+    	
+    }
+
+    
+//    public void drawBlocks() {
+//    	block.drawNeighbours(pos);
+//    }
+//    
+//
+//	@Override
+//	public void draw(Block block,Orientation) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+    
+    //mediator lijkt me interessant
+    //Block <-> Matrix <-> Scherm
+    
+    //Scherm ken enkel posities en geeft een api aan Matrix
+    //Block kent enkel relaties
+    //Rol van matrix is die te vertalen
+    
+    
+    //matrix van posities-en-map
+    //geven positie mee
+    //recusie
+    
+    
+
+
 }
