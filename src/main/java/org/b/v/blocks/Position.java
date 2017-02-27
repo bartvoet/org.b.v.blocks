@@ -5,4 +5,18 @@ public class Position {
 		this.x=x;
 		this.y=y;
 	}
+	
+	public Position toEast() {
+		return new Position(x+1,y);
+	}
+	
+	public Position toSouth() {
+		return new Position(x,y+1);
+	}
+
+	@Override
+	public String toString() {
+		return "[" + x + "," + y + "]";
+	}
+	
 }

@@ -1,6 +1,8 @@
 package org.b.v.blocks;
 
 public class BlockMatrix {
+	
+
 
 	private Block firstBlockRelation=new Block(0);
 	
@@ -8,9 +10,8 @@ public class BlockMatrix {
 		firstBlockRelation.posBlock(id, orientation, otherId);
 	}
 	
-	public void drawBlocks(BlockPainter painter) {
-		
+	public void drawBlocks(final BlocksScreen screen) {
+		firstBlockRelation.drawNeighbours(screen,new Position(0,0));
 	}
-	
 	
 }

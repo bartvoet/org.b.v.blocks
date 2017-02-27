@@ -5,6 +5,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -14,13 +16,18 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-public class BlocksScreen implements BlockPainter {
+public class BlocksScreen extends JFrame implements BlockPainter {
 	
 	
-	private Block block = new Block(0);
+	private BlockMatrix matrix = new BlockMatrix();
 	
-	public BlocksScreen() {
-		
+	public BlocksScreen(String string) {
+		super(string);
+		matrix.addBlock(1, Orientation.EAST,2);
+		matrix.addBlock(2, Orientation.SOUTH,3);
+		matrix.addBlock(4, Orientation.NORTH,3);
+		matrix.drawBlocks(this);
+		System.out.println(blocks);
 	}
 	
 	private static class SwingBlock {
@@ -80,7 +87,7 @@ public class BlocksScreen implements BlockPainter {
      */
     private static void createAndShowGUI() {
         //Create and set up the window.
-        frame = new JFrame("Blocks");
+        frame = new BlocksScreen("Blocks");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Set up the content pane.
@@ -116,35 +123,12 @@ public class BlocksScreen implements BlockPainter {
         });
     }
 
+    private Map<Integer,Position> blocks=new TreeMap<Integer,Position>();
+    
     public void drawBlockAtPosition(int id,Position position) {
-    	
+    	blocks.put(id, position);
     }
-
-    
-//    public void drawBlocks() {
-//    	block.drawNeighbours(pos);
-//    }
-//    
-//
-//	@Override
-//	public void draw(Block block,Orientation) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-    
-    //mediator lijkt me interessant
-    //Block <-> Matrix <-> Scherm
-    
-    //Scherm ken enkel posities en geeft een api aan Matrix
-    //Block kent enkel relaties
-    //Rol van matrix is die te vertalen
     
     
-    //matrix van posities-en-map
-    //geven positie mee
-    //recusie
-    
-    
-
 
 }

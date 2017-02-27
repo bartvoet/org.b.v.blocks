@@ -13,6 +13,7 @@ public class Block {
 	}
 
 	public Block posBlock(int id, Orientation orientation, int otherId) {
+		//temp solution
 		if (this.id == 0) {
 			if (this.east != null) {
 				this.east.posBlock(id, orientation, otherId);
@@ -20,55 +21,78 @@ public class Block {
 				this.east = new Block(id);
 				this.east = this.east.posBlock(id, orientation, otherId);
 			}
+			return this;
 		}
 
-		if (this.id == otherId) {
+		//swith-around...
+		if(orientation == Orientation.WEST) {
+			this.posBlock(otherId, Orientation.EAST, id);
+		}
+		
+		if(orientation == Orientation.NORTH) {
+			this.posBlock(otherId, Orientation.SOUTH, id);
+		}
+		
 
+		if(this.id==id) {
 			if (orientation == Orientation.EAST) {
-				this.east = new Block(id);
+				Block newBlock = new Block(otherId);
+				if(this.east==null) {
+					this.east = newBlock;
+				} else {
+					newBlock.east=this.east;
+					this.east=newBlock;
+				}
 			}
-
 			if (orientation == Orientation.SOUTH) {
-				this.south = new Block(id);
-			}
-
-			if (orientation == Orientation.WEST) {
-				Block newBlock = new Block(id);
-				newBlock.east = this;
-				return newBlock;
-			}
-
-			if (orientation == Orientation.NORTH) {
-				Block newBlock = new Block(id);
-				newBlock.south = this;
-				return newBlock;
-			}
-
-			return null;
-		} else {
-			if (this.south != null) {
-				this.south = this.south.posBlock(id, orientation, otherId);
-			}
-			if (this.east != null) {
-				this.east = this.east.posBlock(id, orientation, otherId);
+				Block newBlock = new Block(otherId);
+				if(this.south==null) {
+					this.south = newBlock;
+				} else {
+					newBlock.south=this.south;
+					this.south=newBlock;
+				}
 			}
 			return this;
 		}
+		
+		if (this.id == otherId) {
+			Block newBlock = new Block(id);
+			if (orientation == Orientation.EAST) {
+				newBlock.east=this;
+			} else {
+				newBlock.south=this;
+			}
+			return newBlock;
+		}
+		
+		if (this.south != null) {
+			this.south = this.south.posBlock(id, orientation, otherId);
+		}
+		if (this.east != null) {
+			this.east = this.east.posBlock(id, orientation, otherId);
+		}
+		
+		return this;
 	}
 
-	public void drawNeighbours(BlockPainter painter) {
-		//positie bijhouden/meegeven???
-		//of gewoon block teruggeven
-		
+	public void drawNeighbours(BlockPainter painter, Position position) {
+		if(this.id==0) {
+			 if(east!=null) {
+				 painter.drawBlockAtPosition(east.id, position);
+				 east.drawNeighbours(painter,position);
+			 }
+		}
 		
 		 if(east!=null) {
-			 painter.drawEast(this.east);
+			 painter.drawBlockAtPosition(east.id, position.toEast());
+			 east.drawNeighbours(painter,position.toEast());
 		 }
 		
 		 if(south!=null) {
-			 painter.drawSouth(this.south);
+			 painter.drawBlockAtPosition(south.id, position.toSouth());
+			 south.drawNeighbours(painter,position.toSouth());
 		 }
-
 	}
 
 }
