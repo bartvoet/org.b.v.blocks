@@ -30,6 +30,10 @@ public class BlockMatrix2 {
 			
 			return false;
 		}
+
+		public boolean isEmpty() {
+			return !filled;
+		}
 	}
 	
 	
@@ -115,7 +119,7 @@ public class BlockMatrix2 {
 		Position idPos = this.findPosition(id);
 		Position otherIdPos = this.findPosition(otherId);
 		
-		
+		//if not first situation one of both should be null
 		if(idPos != null && otherIdPos != null) {
 			throw new IllegalArgumentException();
 		}
@@ -164,8 +168,35 @@ public class BlockMatrix2 {
 	}
 	
 	private void insertPosition(int otherId, Position position) {
-		// TODO Auto-generated method stub
+		//create new row if necessary
+		LinkedList<B> row;
+		if(position.getY() < 0) {
+			row=new LinkedList<B>();
+			matrix.addFirst(row);
+		} else if(position.getY() >= matrix.size()) {
+			row=new LinkedList<B>();
+			matrix.addLast(row);
+		} else {
+			row=matrix.get(position.getY());
+		}
 		
+		//otherwise fetch row
+		if(position.getX()<0) {
+			//nieuwe kolom overal toevoegen
+			
+		} else if(position.getY()>=row.size()) {
+			for(int i=0;i<position.getY();i++) {
+				row.addLast(null);
+			}
+			row.addLast(new B(otherId));
+		} else {
+			if(row.get(position.getX())==null || row.get(position.getX()).isEmpty() ) {
+				row.set(position.getX(),new B(otherId));
+			} else {
+				throw new IllegalArgumentException();
+			}
+			
+		}
 	}
 
 	private boolean isEmpty() {
