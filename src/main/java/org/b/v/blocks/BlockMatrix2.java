@@ -176,14 +176,16 @@ public class BlockMatrix2 {
 		} else if(position.getY() >= matrix.size()) {
 			row=new LinkedList<B>();
 			matrix.addLast(row);
-		} else {
+		} else { //otherwise fetch row
 			row=matrix.get(position.getY());
 		}
 		
-		//otherwise fetch row
+		
 		if(position.getX()<0) {
-			//nieuwe kolom overal toevoegen
-			
+			for(LinkedList<B> r : matrix) {
+				r.addFirst(null);
+			}
+			row.set(0,new B(otherId));
 		} else if(position.getY()>=row.size()) {
 			for(int i=0;i<position.getY();i++) {
 				row.addLast(null);
@@ -195,7 +197,6 @@ public class BlockMatrix2 {
 			} else {
 				throw new IllegalArgumentException();
 			}
-			
 		}
 	}
 
