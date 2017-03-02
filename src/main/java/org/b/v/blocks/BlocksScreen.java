@@ -23,11 +23,6 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 	
 	public BlocksScreen(String string) {
 		super(string);
-		matrix.addBlock(1, Orientation.EAST,2);
-		matrix.addBlock(2, Orientation.SOUTH,3);
-		matrix.addBlock(4, Orientation.NORTH,3);
-		matrix.drawBlocks(this);
-		System.out.println(blocks);
 	}
 	
 	private static class SwingBlock {

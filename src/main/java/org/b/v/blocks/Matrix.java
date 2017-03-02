@@ -1,11 +1,16 @@
 package org.b.v.blocks;
 
+import java.util.AbstractSet;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 
-public class Matrix<T> {
+public class Matrix<T> extends AbstractSet<Map.Entry<Position,T>>{
 	
 	private LinkedList<LinkedList<T>> elements = new LinkedList<LinkedList<T>>();
 	private int columns;
+	private int size=0;
 	
 	public Matrix() {
 		columns=0;
@@ -36,20 +41,32 @@ public class Matrix<T> {
 	}
 	
 	private void setElementAtColumn(int x,T t,LinkedList<T> row) {
-		
-		
+		if(t == null) {
+			return;
+		}
 		
 		if(x >= this.columns) {
 			this.columns=x+1;
 		}
-		if(this.columns >= row.size()) {
+		if(this.columns > row.size()) {
 			adaptSize(row);
 		}
+		
+		T currenValue = row.get(x);
+		
+		if(currenValue==null && t != null) {
+			this.size++;
+		}
+		if(currenValue!=null && t==null) {
+			this.size--;
+		}
+		
 		row.set(x,t);
 	}
 
 	private void adaptSize(LinkedList<T> row) {
-		for(int i=0;i < (this.columns - row.size());i++) {
+		int gap = this.columns - row.size();
+		for(int i=0;i < gap;i++) {
 			row.addLast(null);
 		}
 	}
@@ -62,13 +79,13 @@ public class Matrix<T> {
 		if(y<0) {
 			insertRowsAtStart(Math.abs(y));
 		}
-		setElementAtColumn(x < 0?0:x,t,getRow(y < 0?0:x));	
+		setElementAtColumn((x < 0 ? 0 : x), t, getRow(y < 0 ? 0 : y));	
 		return this;
 	}
 
 
 	public Matrix<T> setElementAt(T t,Position position) {
-		setElementAtColumn(position.getX(),t,getRow(position.getY()));
+		setElementAt(t,position.getX(),position.getY());
 		return this;
 	}
 
@@ -93,5 +110,67 @@ public class Matrix<T> {
 		for(int i=0;i<n;i++) {
 			elements.addFirst(new LinkedList<T>());
 		}
+	}
+
+	public boolean isEmpty() {
+		return this.elements.isEmpty();
+		//TODO make sure to clean up rows withouth elements
+	}
+
+	public Position lookForFirstOccurence(T value) {
+		if(value==null) {
+			return null;
+		}
+		
+		int y=0;
+		
+		for(LinkedList<T> row : this.elements) {
+			int x=0;
+			for(T t:row) {
+				if(value.equals(t)) {
+					return new 	Position(x,y);
+				}
+				x++;
+			}
+			y++;
+		}
+		return null;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		for(LinkedList<T> row : elements) {
+			builder.append(row.toString()).append("\n");
+		}
+		return builder.toString();
+	}
+
+	@Override
+	public Iterator<Entry<Position, T>> iterator() {
+		return new Iterator<Entry<Position,T>>() {
+
+			private int row=0;
+			private int column=0;
+			
+			@Override
+			public boolean hasNext() {
+				
+				return false;
+			}
+
+			@Override
+			public Entry<Position, T> next() {
+				
+				
+				return null;
+			}
+			
+		};
+	}
+
+	@Override
+	public int size() {
+		return this.size;
 	}
 }

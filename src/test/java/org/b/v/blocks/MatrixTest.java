@@ -23,7 +23,29 @@ public class MatrixTest {
 		
 	}
 	
+	@Test
+	public void blabla_() {
+		Matrix<String> matrix = new Matrix<String>()
+			.setElementAt("hello", 0,0)
+			.setElementAt("world", 0,1)
+			.setElementAt("!!", 1,1);
+		
+		matrix.insertColumAtStart();
 
+		assertEquals("hello",matrix.getElementAt(0 + 1, 0));
+		assertEquals("world",matrix.getElementAt(0 + 1, 1));
+		assertEquals("!!",matrix.getElementAt(1 + 1, 1));
+		assertNull(matrix.getElementAt(0, 0));
+		
+		matrix.insertColumAtStart();
+
+		assertEquals("hello",matrix.getElementAt(0 + 2, 0));
+		assertEquals("world",matrix.getElementAt(0 + 2, 1));
+		assertEquals("!!",matrix.getElementAt(1 + 2, 1));
+		assertNull(matrix.getElementAt(0, 0));
+
+		
+	}
 	
 	
 	//isEmpty at position

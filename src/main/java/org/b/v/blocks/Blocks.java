@@ -1,57 +1,50 @@
 package org.b.v.blocks;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 public class Blocks {
 	
 	private Matrix<Integer> matrix=new Matrix<Integer>();
 	
-	public void addBlock(int id,Orientation orientation,int otherId) {
+	public Blocks addBlock(int id,Orientation orientation,int otherId) {
 		Position position = null;//TODO define the position and perform verificaitons
+		int from,to;
 		
-		matrix
-			.setElementAt(id, position)
-			.setElementAt(otherId, position.to(orientation));
+		if(this.matrix.isEmpty()) {
+			position = new Position(0,0);
+			from=id;
+			to=otherId;
+		} else {
+			Position idPos = this.matrix.lookForFirstOccurence(id);
+			Position otherPos = this.matrix.lookForFirstOccurence(otherId);
+			
+			if(idPos == null && otherPos == null) {
+				throw new IllegalArgumentException("At least one of both...");
+			}
+			
+			if(idPos != null && otherPos != null) {
+				//TODO: verify for correctness...
+			}
+			
+			//swap
+			position = idPos == null ? otherPos:idPos;
+			from = idPos == null ? otherId:id;
+			to = idPos != null ? otherId:id;
+			orientation = idPos==null ? orientation.opposite():orientation;
+		}
+		
+		this.matrix
+			.setElementAt(from, position)
+			.setElementAt(to, position.to(orientation));
 				
-//		Position idPos = this.findPosition(id);
-//		Position otherIdPos = this.findPosition(otherId);
-		
-//		//if not first situation one of both should be null
-//		if(idPos != null && otherIdPos != null) {
-//			throw new IllegalArgumentException();
-//		}
-//
-//		if(idPos == null && otherIdPos== null) {
-//			throw new IllegalArgumentException();
-//		}
-
-		
-		//swap so that idPos is not null
-//		if(idPos==null) {
-//			int tempId=id;
-//			id=otherId;
-//			otherId=tempId;
-//			orientation=orientation.opposite();
-//			idPos=otherIdPos;
-//		}
-//		
-		
-//		insertPosition(otherId,idPos.to(orientation));
-		
-		
-		
-		
-
-
-		
+		return this;
 	}
 	
-
 
 	public void drawBlocks(final BlocksScreen screen) {
-
+//		this.matrix.runthrough
 	}
-	
+
+	@Override
+	public String toString() {
+		return this.matrix.toString();
+	}
 }

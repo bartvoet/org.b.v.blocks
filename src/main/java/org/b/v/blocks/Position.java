@@ -23,11 +23,11 @@ public class Position {
 	}
 
 	public Position toWest() {
-		return new Position(x, y + 1);
+		return new Position(x - 1, y);
 	}
 
 	public Position toNorth() {
-		return new Position(x, y + 1);
+		return new Position(x, y - 1);
 	}
 
 	public Position toEast() {
