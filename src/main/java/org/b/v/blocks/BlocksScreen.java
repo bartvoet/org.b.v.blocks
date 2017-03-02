@@ -19,7 +19,7 @@ import javax.swing.JMenuItem;
 public class BlocksScreen extends JFrame implements BlockPainter {
 	
 	
-	private BlockMatrix matrix = new BlockMatrix();
+	private Blocks matrix = new Blocks();
 	
 	public BlocksScreen(String string) {
 		super(string);

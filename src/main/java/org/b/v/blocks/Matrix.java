@@ -36,6 +36,9 @@ public class Matrix<T> {
 	}
 	
 	private void setElementAtColumn(int x,T t,LinkedList<T> row) {
+		
+		
+		
 		if(x >= this.columns) {
 			this.columns=x+1;
 		}
@@ -52,15 +55,43 @@ public class Matrix<T> {
 	}
 	
 	public Matrix<T> setElementAt(T t,int x,int y) {
-		setElementAtColumn(x,t,getRow(y));	
+		if(x<0) {
+			insertColumnsAtStart(Math.abs(x));
+		}
+		
+		if(y<0) {
+			insertRowsAtStart(Math.abs(y));
+		}
+		setElementAtColumn(x < 0?0:x,t,getRow(y < 0?0:x));	
 		return this;
 	}
+
+
+	public Matrix<T> setElementAt(T t,Position position) {
+		setElementAtColumn(position.getX(),t,getRow(position.getY()));
+		return this;
+	}
+
 	
 	public void insertColumAtStart() {
 		this.columns++;
 		for(LinkedList<T> row : this.elements) {
 			row.addFirst(null);
 		}
-		
+	}
+	
+	public void insertColumnsAtStart(int n) {
+		this.columns++;
+		for(LinkedList<T> row : this.elements) {
+			for(int i=0;i<n;i++) {
+				row.addFirst(null);
+			}
+		}
+	}
+
+	private void insertRowsAtStart(int n) {
+		for(int i=0;i<n;i++) {
+			elements.addFirst(new LinkedList<T>());
+		}
 	}
 }

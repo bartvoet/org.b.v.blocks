@@ -12,7 +12,7 @@ enum Orientation implements OppositeOrientation{
 		}
 	},SOUTH {
 		public Orientation opposite() {
-		return SOUTH;
+			return NORTH;
 		}
 	}
 	,EAST {
