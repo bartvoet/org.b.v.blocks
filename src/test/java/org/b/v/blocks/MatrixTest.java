@@ -2,11 +2,13 @@ package org.b.v.blocks;
 
 import static org.junit.Assert.*;
 
+
 import org.junit.Test;
 
 public class MatrixTest {
 
 
+	
 	@Test
 	public void blabla() {
 		Matrix<String> matrix = new Matrix<String>()
@@ -20,6 +22,10 @@ public class MatrixTest {
 		assertNull(matrix.getElementAt(1, 0));
 		
 		assertNull(matrix.getElementAt(1000, 0));
+		
+		System.out.println(matrix.getAllPositions());
+		
+	
 		
 	}
 	

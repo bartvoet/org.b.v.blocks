@@ -15,6 +15,8 @@ public class BlocksTest {
 		matrix.addBlock(5, Orientation.WEST,4);
 		matrix.addBlock(1, Orientation.WEST,6);
 		
+		
+		
 	}
 
 }

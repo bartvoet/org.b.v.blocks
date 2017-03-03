@@ -63,12 +63,13 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 		menuBar.add(menu);
 	}
 	
-	private static JFrame frame;
+	private static BlocksScreen frame;
 	
 
 	
     private static void drawBlock(int id,int x,int y,int width,int height) {
     	SwingBlock block = new SwingBlock(id);
+    	block.button().setText("" + id);
     	frame.getContentPane().add(block.button());
     	Insets insets = frame.getInsets();
     	block.button().setBounds(x + insets.left, y + insets.top,width, height);
@@ -87,12 +88,6 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 
         //Set up the content pane.
         frame.getContentPane().setLayout(null);
-
-        int sizeOfBlock = 50;
-        
-        for(int i=0;i<8;i++) {
-        	drawBlock(i,25 + (i * sizeOfBlock), 5, sizeOfBlock, sizeOfBlock);
-        }
 
         //Size and display the window.
         Insets insets = frame.getInsets();
@@ -114,6 +109,13 @@ public class BlocksScreen extends JFrame implements BlockPainter {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
+        		Blocks matrix = new Blocks();
+        		matrix.addBlock(1, Orientation.EAST,2);
+        		matrix.addBlock(2, Orientation.SOUTH,3);
+        		matrix.addBlock(4, Orientation.NORTH,3);
+        		matrix.addBlock(5, Orientation.WEST,4);
+        		matrix.addBlock(1, Orientation.WEST,6);
+        		matrix.drawBlocks(frame);
             }
         });
     }
@@ -121,7 +123,8 @@ public class BlocksScreen extends JFrame implements BlockPainter {
     private Map<Integer,Position> blocks=new TreeMap<Integer,Position>();
     
     public void drawBlockAtPosition(int id,Position position) {
-    	blocks.put(id, position);
+    	int sizeOfBlock = 50;
+    	drawBlock(id,25 + (position.getX() * sizeOfBlock), 25 + position.getY() * sizeOfBlock, sizeOfBlock, sizeOfBlock);
     }
     
     

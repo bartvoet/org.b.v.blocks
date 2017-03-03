@@ -1,5 +1,7 @@
 package org.b.v.blocks;
 
+import java.util.Map;
+
 public class Blocks {
 	
 	private Matrix<Integer> matrix=new Matrix<Integer>();
@@ -40,7 +42,9 @@ public class Blocks {
 	
 
 	public void drawBlocks(final BlocksScreen screen) {
-//		this.matrix.runthrough
+		for(Map.Entry<Position,Integer> entry:this.matrix.getAllPositions().entrySet()) {
+			screen.drawBlockAtPosition(entry.getValue(),entry.getKey());
+		}
 	}
 
 	@Override

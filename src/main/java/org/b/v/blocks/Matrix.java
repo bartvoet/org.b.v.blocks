@@ -2,11 +2,12 @@ package org.b.v.blocks;
 
 import java.util.AbstractSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class Matrix<T> extends AbstractSet<Map.Entry<Position,T>>{
+public class Matrix<T> {
 	
 	private LinkedList<LinkedList<T>> elements = new LinkedList<LinkedList<T>>();
 	private int columns;
@@ -114,7 +115,6 @@ public class Matrix<T> extends AbstractSet<Map.Entry<Position,T>>{
 
 	public boolean isEmpty() {
 		return this.elements.isEmpty();
-		//TODO make sure to clean up rows withouth elements
 	}
 
 	public Position lookForFirstOccurence(T value) {
@@ -145,32 +145,22 @@ public class Matrix<T> extends AbstractSet<Map.Entry<Position,T>>{
 		}
 		return builder.toString();
 	}
-
-	@Override
-	public Iterator<Entry<Position, T>> iterator() {
-		return new Iterator<Entry<Position,T>>() {
-
-			private int row=0;
-			private int column=0;
-			
-			@Override
-			public boolean hasNext() {
-				
-				return false;
+	
+	public Map<Position,T> getAllPositions() {
+		int y=0;
+		Map<Position,T> map = new LinkedHashMap<Position,T>();
+		for(LinkedList<T> row: this.elements) {
+			int x=0;
+			for(T t:row) {
+				if(t!=null) {
+					map.put(new Position(x,y), t);
+				}
+				x++;
 			}
-
-			@Override
-			public Entry<Position, T> next() {
-				
-				
-				return null;
-			}
-			
-		};
+			y++;
+		}
+		return map;
 	}
+	
 
-	@Override
-	public int size() {
-		return this.size;
-	}
 }
