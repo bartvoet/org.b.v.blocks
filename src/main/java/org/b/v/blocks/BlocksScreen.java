@@ -70,7 +70,7 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 	
 	private static BlocksScreen frame;
 	
-
+	
 	
     private static void drawBlock(int id,int x,int y,int width,int height) {
     	SwingBlock block = new SwingBlock(id);
@@ -120,11 +120,11 @@ public class BlocksScreen extends JFrame implements BlockPainter {
     		public void run() {
     			createAndShowGUI();
     			Blocks matrix = new Blocks();
-//    			matrix.addBlock(1, Orientation.EAST,2);
-//    			matrix.addBlock(2, Orientation.SOUTH,3);
-//    			matrix.addBlock(4, Orientation.NORTH,3);
-//    			matrix.addBlock(5, Orientation.WEST,4);
-//    			matrix.addBlock(1, Orientation.WEST,6);
+    			matrix.addBlock(1, Orientation.EAST,2);
+    			matrix.addBlock(2, Orientation.SOUTH,3);
+    			matrix.addBlock(4, Orientation.NORTH,3);
+    			matrix.addBlock(5, Orientation.WEST,4);
+    			matrix.addBlock(1, Orientation.WEST,6);
     			matrix.drawBlocks(frame);
     		}
     	});
@@ -134,6 +134,7 @@ public class BlocksScreen extends JFrame implements BlockPainter {
     		Socket socket = server.accept();
     		socket.getInputStream();
     		Scanner in = new Scanner(socket.getInputStream());
+    		Blocks matrix = new Blocks();
     		while(in.hasNextLine()) {
 	    		String line = in.nextLine();
 	    		String[] tokens = line.split(";");
@@ -143,16 +144,14 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 	    		int id=Integer.parseInt(tokens[1]);
 	    		int other=Integer.parseInt(tokens[2]);
 	    		Orientation orientation = Orientation.valueOf(tokens[3]);
-	    		Blocks matrix = new Blocks();
 	    		matrix.addBlock(id, orientation,other);
-	    		matrix.drawBlocks(frame);
-//	    		StringTokenizer tokenizer = new StringTokenizer(line, ";");
 	    		
-//	    		while(tokenizer.hasMoreTokens()) {
-//	    		 System.out.println(tokenizer.nextToken());
-//	    		}
+	    		//frame.removeAll();
 	    		
-	    		frame.setTitle(line);
+//	    		matrix.drawBlocks(frame);
+//	    		frame.validate();
+//	    		frame.repaint();
+//	    		frame.setTitle(line);
     		}
     	}
     	
