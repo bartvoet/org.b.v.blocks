@@ -23,7 +23,7 @@ public class Blocks {
 			}
 			
 			if(idPos != null && otherPos != null) {
-				//TODO: verify for correctness...
+				//TODO: verify for correctness...by checking the orientation...
 			}
 			
 			//swap

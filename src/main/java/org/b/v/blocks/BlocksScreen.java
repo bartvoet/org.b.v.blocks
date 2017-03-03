@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
 public class BlocksScreen extends JFrame implements BlockPainter {
 	
@@ -119,15 +120,17 @@ public class BlocksScreen extends JFrame implements BlockPainter {
     	javax.swing.SwingUtilities.invokeLater(new Runnable() {
     		public void run() {
     			createAndShowGUI();
-    			Blocks matrix = new Blocks();
-    			matrix.addBlock(1, Orientation.EAST,2);
-    			matrix.addBlock(2, Orientation.SOUTH,3);
-    			matrix.addBlock(4, Orientation.NORTH,3);
-    			matrix.addBlock(5, Orientation.WEST,4);
-    			matrix.addBlock(1, Orientation.WEST,6);
-    			matrix.drawBlocks(frame);
+//    			Blocks matrix = new Blocks();
+//    			matrix.addBlock(1, Orientation.EAST,2);
+//    			matrix.addBlock(2, Orientation.SOUTH,3);
+//    			matrix.addBlock(4, Orientation.NORTH,3);
+//    			matrix.addBlock(5, Orientation.WEST,4);
+//    			matrix.addBlock(1, Orientation.WEST,6);
+//    			matrix.drawBlocks(frame);
     		}
     	});
+    	
+    	
     	
     	ServerSocket server = new ServerSocket(8080);
     	while(true) {
@@ -146,9 +149,11 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 	    		Orientation orientation = Orientation.valueOf(tokens[3]);
 	    		matrix.addBlock(id, orientation,other);
 	    		
-	    		//frame.removeAll();
+//	    		
+	    		frame.setContentPane(new JPanel());
+	    		frame.getContentPane().setLayout(null);
 	    		
-//	    		matrix.drawBlocks(frame);
+	    		matrix.drawBlocks(frame);
 //	    		frame.validate();
 //	    		frame.repaint();
 //	    		frame.setTitle(line);
