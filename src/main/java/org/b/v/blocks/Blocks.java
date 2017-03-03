@@ -41,7 +41,7 @@ public class Blocks {
 	}
 	
 
-	public void drawBlocks(final BlocksScreen screen) {
+	public void drawBlocks(final BlockPainter screen) {
 		for(Map.Entry<Position,Integer> entry:this.matrix.getAllPositions().entrySet()) {
 			screen.drawBlockAtPosition(entry.getValue(),entry.getKey());
 		}
