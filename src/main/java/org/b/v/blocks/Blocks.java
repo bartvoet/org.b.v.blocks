@@ -41,7 +41,10 @@ public class Blocks {
 	}
 	
 
+	//TODO support for removing...?
+	
 	public void drawBlocks(final BlockPainter screen) {
+		//TODO maybe indicate that new screen ...
 		for(Map.Entry<Position,Integer> entry:this.matrix.getAllPositions().entrySet()) {
 			screen.drawBlockAtPosition(entry.getValue(),entry.getKey());
 		}
