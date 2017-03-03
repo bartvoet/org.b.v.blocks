@@ -147,7 +147,7 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 	    		int id=Integer.parseInt(tokens[1]);
 	    		int other=Integer.parseInt(tokens[2]);
 	    		Orientation orientation = Orientation.valueOf(tokens[3]);
-	    		matrix.addBlock(id, orientation,other);
+	    		matrix.addBlockRelationShip(id, orientation,other);
 	    		
 //	    		
 	    		frame.setContentPane(new JPanel());

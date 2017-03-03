@@ -6,7 +6,7 @@ public class Blocks {
 	
 	private Matrix<Integer> matrix=new Matrix<Integer>();
 	
-	public Blocks addBlock(int id,Orientation orientation,int otherId) {
+	public Blocks addBlockRelationShip(int id,Orientation orientation,int otherId) {
 		Position position = null;//TODO define the position and perform verificaitons
 		int from,to;
 		
