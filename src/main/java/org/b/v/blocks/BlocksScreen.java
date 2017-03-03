@@ -5,8 +5,14 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.Map;
-import java.util.TreeMap;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -18,9 +24,8 @@ import javax.swing.JMenuItem;
 
 public class BlocksScreen extends JFrame implements BlockPainter {
 	
-	
-	private Blocks matrix = new Blocks();
-	
+	private static final long serialVersionUID = 1L;
+
 	public BlocksScreen(String string) {
 		super(string);
 	}
@@ -69,10 +74,10 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 	
     private static void drawBlock(int id,int x,int y,int width,int height) {
     	SwingBlock block = new SwingBlock(id);
-    	block.button().setText("" + id);
     	frame.getContentPane().add(block.button());
     	Insets insets = frame.getInsets();
     	block.button().setBounds(x + insets.left, y + insets.top,width, height);
+    	block.button().setText("" + id);
     }
     
 
@@ -90,7 +95,6 @@ public class BlocksScreen extends JFrame implements BlockPainter {
         frame.getContentPane().setLayout(null);
 
         //Size and display the window.
-        Insets insets = frame.getInsets();
         frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 //        frame.setSize(300 + insets.left + insets.right,
 //                      125 + insets.top + insets.bottom);
@@ -103,30 +107,56 @@ public class BlocksScreen extends JFrame implements BlockPainter {
     
 
 
-    public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-        		Blocks matrix = new Blocks();
-        		matrix.addBlock(1, Orientation.EAST,2);
-        		matrix.addBlock(2, Orientation.SOUTH,3);
-        		matrix.addBlock(4, Orientation.NORTH,3);
-        		matrix.addBlock(5, Orientation.WEST,4);
-        		matrix.addBlock(1, Orientation.WEST,6);
-        		matrix.drawBlocks(frame);
-            }
-        });
-    }
 
-    private Map<Integer,Position> blocks=new TreeMap<Integer,Position>();
-    
     public void drawBlockAtPosition(int id,Position position) {
     	int sizeOfBlock = 50;
     	drawBlock(id,25 + (position.getX() * sizeOfBlock), 25 + position.getY() * sizeOfBlock, sizeOfBlock, sizeOfBlock);
     }
     
-    
-
+    public static void main(String[] args) throws IOException {
+    	//Schedule a job for the event-dispatching thread:
+    	//creating and showing this application's GUI.
+    	javax.swing.SwingUtilities.invokeLater(new Runnable() {
+    		public void run() {
+    			createAndShowGUI();
+    			Blocks matrix = new Blocks();
+//    			matrix.addBlock(1, Orientation.EAST,2);
+//    			matrix.addBlock(2, Orientation.SOUTH,3);
+//    			matrix.addBlock(4, Orientation.NORTH,3);
+//    			matrix.addBlock(5, Orientation.WEST,4);
+//    			matrix.addBlock(1, Orientation.WEST,6);
+    			matrix.drawBlocks(frame);
+    		}
+    	});
+    	
+    	ServerSocket server = new ServerSocket(8080);
+    	while(true) {
+    		Socket socket = server.accept();
+    		socket.getInputStream();
+    		Scanner in = new Scanner(socket.getInputStream());
+    		while(in.hasNextLine()) {
+	    		String line = in.nextLine();
+	    		String[] tokens = line.split(";");
+	    		for(String token : tokens) {
+	    			System.out.println(token);
+	    		}
+	    		int id=Integer.parseInt(tokens[1]);
+	    		int other=Integer.parseInt(tokens[2]);
+	    		Orientation orientation = Orientation.valueOf(tokens[3]);
+	    		Blocks matrix = new Blocks();
+	    		matrix.addBlock(id, orientation,other);
+	    		matrix.drawBlocks(frame);
+//	    		StringTokenizer tokenizer = new StringTokenizer(line, ";");
+	    		
+//	    		while(tokenizer.hasMoreTokens()) {
+//	    		 System.out.println(tokenizer.nextToken());
+//	    		}
+	    		
+	    		frame.setTitle(line);
+    		}
+    	}
+    	
+    	
+    	//TODO: socket...
+    }
 }
