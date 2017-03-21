@@ -6,8 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,6 +32,8 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 	public BlocksScreen(String string) {
 		super(string);
 	}
+	
+	private static Blocks matrix = new Blocks();
 
 	private static final class TcpBlocksServer implements Runnable {
 		
@@ -45,22 +51,10 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 					Socket socket = server.accept();
 					socket.getInputStream();
 					Scanner in = new Scanner(socket.getInputStream());
-					Blocks matrix = new Blocks();
+					
 					while (in.hasNextLine()) {
 						String line = in.nextLine();
-						String[] tokens = line.split(";");
-						for (String token : tokens) {
-							System.out.println(token);
-						}
-						int id = Integer.parseInt(tokens[1]);
-						int other = Integer.parseInt(tokens[2]);
-						Orientation orientation = Orientation.valueOf(tokens[3]);
-						matrix.addBlockRelationShip(id, orientation, other);
-
-						frame.setContentPane(new JPanel());
-						frame.getContentPane().setLayout(null);
-
-						matrix.drawBlocks(frame);
+						parseMessage(matrix, line);
 					}
 				}
 
@@ -68,6 +62,36 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private static class UdpBlocksServer implements Runnable {
+
+		private int port;
+		private DatagramSocket socket;
+
+		UdpBlocksServer(int port) {
+			this.port = port;
+		}
+		
+		@Override
+		public void run() {
+			try {
+				byte[] buf = new byte[256];
+				socket = new DatagramSocket(port);
+				while(true) {
+					DatagramPacket packet = new DatagramPacket(buf, buf.length);
+					socket.receive(packet);
+					System.out.println("lenght: " + packet.getLength());
+					parseMessage(matrix,new String(Arrays.copyOfRange(packet.getData(), 0, packet.getLength())));
+				}
+			} catch (SocketException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}
+		
 	}
 
 	private static class SwingBlock {
@@ -158,7 +182,24 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 
 		ExecutorService service = Executors.newFixedThreadPool(2);
 		service.execute(new TcpBlocksServer(8080));
+		service.execute(new UdpBlocksServer(8081));
 
 		// TODO: socket...
+	}
+
+	private static void parseMessage(Blocks matrix, String line) {
+		String[] tokens = line.split(";");
+		for (String token : tokens) {
+			System.out.println(token);
+		}
+		int id = Integer.parseInt(tokens[1]);
+		int other = Integer.parseInt(tokens[2]);
+		Orientation orientation = Orientation.valueOf(tokens[3]);
+		matrix.addBlockRelationShip(id, orientation, other);
+
+		frame.setContentPane(new JPanel());
+		frame.getContentPane().setLayout(null);
+
+		matrix.drawBlocks(frame);
 	}
 }
