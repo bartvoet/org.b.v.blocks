@@ -24,13 +24,7 @@ public class TcpServerTester {
 		writer.flush();
 		TimeUnit.SECONDS.sleep(1);
 		writer.println("l;1;6;WEST");
-		
-//		matrix.addBlock(1, Orientation.EAST,2);
-//		matrix.addBlock(2, Orientation.SOUTH,3);
-//		matrix.addBlock(4, Orientation.NORTH,3);
-//		matrix.addBlock(5, Orientation.WEST,4);
-//		matrix.addBlock(1, Orientation.WEST,6);
-		
 		writer.close();
+		socket.close();
 	}
 }

@@ -56,6 +56,8 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 						String line = in.nextLine();
 						parseMessage(matrix, line);
 					}
+					in.close();
+					server.close();
 				}
 
 			} catch (Throwable e) {
@@ -87,7 +89,6 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 			} catch (SocketException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
 		}
@@ -183,8 +184,6 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 		ExecutorService service = Executors.newFixedThreadPool(2);
 		service.execute(new TcpBlocksServer(8080));
 		service.execute(new UdpBlocksServer(8081));
-
-		// TODO: socket...
 	}
 
 	private static void parseMessage(Blocks matrix, String line) {

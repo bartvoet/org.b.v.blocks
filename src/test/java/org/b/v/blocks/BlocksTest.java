@@ -14,9 +14,6 @@ public class BlocksTest {
 		matrix.addBlockRelationShip(4, Orientation.NORTH,3);
 		matrix.addBlockRelationShip(5, Orientation.WEST,4);
 		matrix.addBlockRelationShip(1, Orientation.WEST,6);
-		
-		
-		
 	}
 
 }
