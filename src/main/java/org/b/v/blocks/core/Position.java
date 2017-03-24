@@ -1,4 +1,4 @@
-package org.b.v.blocks;
+package org.b.v.blocks.core;
 
 public class Position {
 	private int x, y;

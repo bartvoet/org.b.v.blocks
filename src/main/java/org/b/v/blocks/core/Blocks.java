@@ -1,6 +1,8 @@
-package org.b.v.blocks;
+package org.b.v.blocks.core;
 
 import java.util.Map;
+
+import org.b.v.blocks.screen.BlockPainter;
 
 public class Blocks {
 	

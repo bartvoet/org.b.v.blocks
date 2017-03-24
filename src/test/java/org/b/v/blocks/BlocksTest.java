@@ -2,6 +2,8 @@ package org.b.v.blocks;
 
 import static org.junit.Assert.*;
 
+import org.b.v.blocks.core.Blocks;
+import org.b.v.blocks.core.Orientation;
 import org.junit.Test;
 
 public class BlocksTest {

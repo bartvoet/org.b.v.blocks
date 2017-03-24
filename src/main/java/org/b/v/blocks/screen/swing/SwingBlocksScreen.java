@@ -1,4 +1,4 @@
-package org.b.v.blocks;
+package org.b.v.blocks.screen.swing;
 
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -25,22 +26,47 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-public class BlocksScreen extends JFrame implements BlockPainter {
+import org.b.v.blocks.core.Blocks;
+import org.b.v.blocks.core.Orientation;
+import org.b.v.blocks.core.Position;
+import org.b.v.blocks.screen.BlockPainter;
+
+public class SwingBlocksScreen extends JFrame implements BlockPainter {
 
 	private static final long serialVersionUID = 1L;
 
-	public BlocksScreen(String string) {
+	public SwingBlocksScreen(String string) {
 		super(string);
 	}
 	
 	private static Blocks matrix = new Blocks();
 
-	private static final class TcpBlocksServer implements Runnable {
+	
+	public static void parseMessage(Blocks matrix, String line) {
+		String[] tokens = line.split(";");
+		for (String token : tokens) {
+			System.out.println(token);
+		}
+		int id = Integer.parseInt(tokens[1]);
+		int other = Integer.parseInt(tokens[2]);
+		Orientation orientation = Orientation.valueOf(tokens[3]);
+		matrix.addBlockRelationShip(id, orientation, other);
+		
+		frame.setContentPane(new JPanel());
+		frame.getContentPane().setLayout(null);
+
+		matrix.drawBlocks(frame);
+	}
+		
+	
+	private static class TcpBlocksServer implements Runnable {
 		
 		private int port;
+		private Blocks matrix;
 
-		public TcpBlocksServer(int port) {
+		public TcpBlocksServer(int port,Blocks matrix) {
 			this.port = 8080;
+			this.matrix=matrix;
 		}
 		
 		@Override
@@ -54,15 +80,14 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 					
 					while (in.hasNextLine()) {
 						String line = in.nextLine();
-						parseMessage(matrix, line);
+						parseMessage(this.matrix, line);
 					}
 					in.close();
-					server.close();
 				}
 
 			} catch (Throwable e) {
 				e.printStackTrace();
-			}
+			} 
 		}
 	}
 	
@@ -70,9 +95,11 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 
 		private int port;
 		private DatagramSocket socket;
+		private Blocks matrix;
 
-		UdpBlocksServer(int port) {
+		UdpBlocksServer(int port,Blocks matrix) {
 			this.port = port;
+			this.matrix = matrix;
 		}
 		
 		@Override
@@ -84,7 +111,7 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 					DatagramPacket packet = new DatagramPacket(buf, buf.length);
 					socket.receive(packet);
 					System.out.println("lenght: " + packet.getLength());
-					parseMessage(matrix,new String(Arrays.copyOfRange(packet.getData(), 0, packet.getLength())));
+					parseMessage(this.matrix,new String(Arrays.copyOfRange(packet.getData(), 0, packet.getLength())));
 				}
 			} catch (SocketException e) {
 				e.printStackTrace();
@@ -92,8 +119,8 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 				e.printStackTrace();
 			}			
 		}
-		
 	}
+	
 
 	private static class SwingBlock {
 		private JButton button;
@@ -133,7 +160,7 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 		menuBar.add(menu);
 	}
 
-	private static BlocksScreen frame;
+	private static SwingBlocksScreen frame;
 
 	private static void drawBlock(int id, int x, int y, int width, int height) {
 		SwingBlock block = new SwingBlock(id);
@@ -149,7 +176,7 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 	 */
 	private static void createAndShowGUI() {
 		// Create and set up the window.
-		frame = new BlocksScreen("Blocks");
+		frame = new SwingBlocksScreen("Blocks");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Set up the content pane.
@@ -181,24 +208,10 @@ public class BlocksScreen extends JFrame implements BlockPainter {
 			}
 		});
 
-		ExecutorService service = Executors.newFixedThreadPool(2);
-		service.execute(new TcpBlocksServer(8080));
-		service.execute(new UdpBlocksServer(8081));
+		ExecutorService service = Executors.newFixedThreadPool(3);
+		service.execute(new TcpBlocksServer(8080,matrix));
+		service.execute(new UdpBlocksServer(8081,matrix));
 	}
 
-	private static void parseMessage(Blocks matrix, String line) {
-		String[] tokens = line.split(";");
-		for (String token : tokens) {
-			System.out.println(token);
-		}
-		int id = Integer.parseInt(tokens[1]);
-		int other = Integer.parseInt(tokens[2]);
-		Orientation orientation = Orientation.valueOf(tokens[3]);
-		matrix.addBlockRelationShip(id, orientation, other);
 
-		frame.setContentPane(new JPanel());
-		frame.getContentPane().setLayout(null);
-
-		matrix.drawBlocks(frame);
-	}
 }

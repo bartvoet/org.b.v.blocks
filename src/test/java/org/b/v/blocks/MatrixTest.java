@@ -2,7 +2,7 @@ package org.b.v.blocks;
 
 import static org.junit.Assert.*;
 
-
+import org.b.v.blocks.core.Matrix;
 import org.junit.Test;
 
 public class MatrixTest {

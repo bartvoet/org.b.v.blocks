@@ -1,10 +1,10 @@
-package org.b.v.blocks;
+package org.b.v.blocks.core;
 
 interface OppositeOrientation {
 	public Orientation opposite();
 }
 
-enum Orientation implements OppositeOrientation{
+public enum Orientation implements OppositeOrientation{
 	
 	NORTH {
 		public Orientation opposite() {

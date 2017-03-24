@@ -1,4 +1,4 @@
-package org.b.v.blocks;
+package org.b.v.blocks.core;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
