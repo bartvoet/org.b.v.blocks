@@ -13,6 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,8 +28,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import org.b.v.blocks.core.Blocks;
+import org.b.v.blocks.core.Matrix;
 import org.b.v.blocks.core.Orientation;
 import org.b.v.blocks.core.Position;
+import org.b.v.blocks.protocol.Protocol;
+import org.b.v.blocks.protocol.net.remote.RemoteBus;
+import org.b.v.blocks.protocol.test.remote.IpMessageTransformer;
 import org.b.v.blocks.screen.BlockPainter;
 
 public class SwingBlocksScreen extends JFrame implements BlockPainter {
@@ -47,8 +52,10 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 		for (String token : tokens) {
 			System.out.println(token);
 		}
-		int id = Integer.parseInt(tokens[1]);
-		int other = Integer.parseInt(tokens[2]);
+		String id = tokens[1];
+		String other = tokens[2];
+//		int id = Integer.parseInt(tokens[1]);
+//		int other = Integer.parseInt(tokens[2]);
 		Orientation orientation = Orientation.valueOf(tokens[3]);
 		matrix.addBlockRelationShip(id, orientation, other);
 		
@@ -125,7 +132,7 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 	private static class SwingBlock {
 		private JButton button;
 
-		SwingBlock(final int id) {
+		SwingBlock(final String id) {
 			this.button = new JButton("");
 			this.button.addActionListener(new ActionListener() {
 				@Override
@@ -162,7 +169,7 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 
 	private static SwingBlocksScreen frame;
 
-	private static void drawBlock(int id, int x, int y, int width, int height) {
+	private static void drawBlock(String id, int x, int y, int width, int height) {
 		SwingBlock block = new SwingBlock(id);
 		frame.getContentPane().add(block.button());
 		Insets insets = frame.getInsets();
@@ -193,7 +200,7 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 		frame.setVisible(true);
 	}
 
-	public void drawBlockAtPosition(int id, Position position) {
+	public void drawBlockAtPosition(String id, Position position) {
 		int sizeOfBlock = 50;
 		drawBlock(id, 25 + (position.getX() * sizeOfBlock), 25 + position.getY() * sizeOfBlock, sizeOfBlock,
 				sizeOfBlock);
@@ -211,6 +218,15 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 		ExecutorService service = Executors.newFixedThreadPool(3);
 		service.execute(new TcpBlocksServer(8080,matrix));
 		service.execute(new UdpBlocksServer(8081,matrix));
+
+//		IpMessageTransformer transformer = new IpMessageTransformer();
+//		RemoteBus bus = new RemoteBus(8081,8082,"localhost").withTransformer(transformer);
+//		Protocol protocol = new Protocol(bus);
+//		Matrix<String> matrix = protocol.run();
+//		for(Map.Entry<Position,String> entry:matrix.getAllPositions().entrySet()) {
+//			frame.drawBlockAtPosition(entry.getValue(),entry.getKey());
+//		}
+//		System.out.println("finished");
 	}
 
 

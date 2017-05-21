@@ -6,11 +6,11 @@ import org.b.v.blocks.screen.BlockPainter;
 
 public class Blocks {
 	
-	private Matrix<Integer> matrix=new Matrix<Integer>();
+	private Matrix<String> matrix=new Matrix<String>();
 	
-	public Blocks addBlockRelationShip(int id,Orientation orientation,int otherId) {
+	public Blocks addBlockRelationShip(String id,Orientation orientation,String otherId) {
 		Position position = null;//TODO define the position and perform verificaitons
-		int from,to;
+		String from,to;
 		
 		if(this.matrix.isEmpty()) {
 			position = new Position(0,0);
@@ -47,7 +47,7 @@ public class Blocks {
 	
 	public void drawBlocks(final BlockPainter screen) {
 		//TODO maybe indicate that new screen ...
-		for(Map.Entry<Position,Integer> entry:this.matrix.getAllPositions().entrySet()) {
+		for(Map.Entry<Position,String> entry:this.matrix.getAllPositions().entrySet()) {
 			screen.drawBlockAtPosition(entry.getValue(),entry.getKey());
 		}
 	}

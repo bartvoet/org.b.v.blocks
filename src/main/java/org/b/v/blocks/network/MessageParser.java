@@ -11,8 +11,8 @@ public class MessageParser {
 		for (String token : tokens) {
 			System.out.println(token);
 		}
-		int id = Integer.parseInt(tokens[1]);
-		int other = Integer.parseInt(tokens[2]);
+		String id = (tokens[1]);
+		String other = (tokens[2]);
 		Orientation orientation = Orientation.valueOf(tokens[3]);
 		matrix.addBlockRelationShip(id, orientation, other);
 
