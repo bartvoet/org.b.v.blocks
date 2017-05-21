@@ -1,5 +1,6 @@
 package org.b.v.blocks.core;
 
+
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -132,6 +133,10 @@ public class Matrix<T> {
 			y++;
 		}
 		return null;
+	}
+	
+	public boolean valueExists(T value) {
+		return this.lookForFirstOccurence(value) != null;
 	}
 	
 	@Override
