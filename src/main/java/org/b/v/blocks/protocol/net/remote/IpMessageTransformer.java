@@ -1,4 +1,4 @@
-package org.b.v.blocks.protocol.test.remote;
+package org.b.v.blocks.protocol.net.remote;
 
 import org.b.v.blocks.protocol.net.Message;
 import org.b.v.blocks.protocol.net.remote.RemoteBus.MessageTransformer;

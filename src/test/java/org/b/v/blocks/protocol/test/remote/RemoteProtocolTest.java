@@ -1,6 +1,7 @@
 package org.b.v.blocks.protocol.test.remote;
 
 import org.b.v.blocks.protocol.Protocol;
+import org.b.v.blocks.protocol.net.remote.IpMessageTransformer;
 import org.b.v.blocks.protocol.net.remote.RemoteBus;
 import org.b.v.blocks.protocol.test.FakeBlockRepo;
 
@@ -21,10 +22,10 @@ public class RemoteProtocolTest {
 		receiver.run();
 		
 		//bus
-		RemoteBus bus = new RemoteBus(8081,8082,"localhost").withTransformer(transformer);
-		Protocol protocol = new Protocol(bus);
-		System.out.println(protocol.run());
-		System.out.println("finished");
+//		RemoteBus bus = new RemoteBus(8081,8082,"localhost").withTransformer(transformer);
+//		Protocol protocol = new Protocol(bus);
+//		System.out.println(protocol.run());
+//		System.out.println("finished");
 	}
 
 }
