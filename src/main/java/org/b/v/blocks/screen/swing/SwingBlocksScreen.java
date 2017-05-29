@@ -15,6 +15,7 @@ import java.net.SocketException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -44,9 +45,6 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 		super(string);
 	}
 	
-	private static Blocks matrix = new Blocks();
-
-	
 	public static void parseMessage(Blocks matrix, String line) {
 		String[] tokens = line.split(";");
 		for (String token : tokens) {
@@ -54,8 +52,6 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 		}
 		String id = tokens[1];
 		String other = tokens[2];
-//		int id = Integer.parseInt(tokens[1]);
-//		int other = Integer.parseInt(tokens[2]);
 		Orientation orientation = Orientation.valueOf(tokens[3]);
 		matrix.addBlockRelationShip(id, orientation, other);
 		
@@ -97,7 +93,20 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 		addCategory.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ind
+				Executors.newSingleThreadExecutor().submit(new Callable<Void>() {
+					@Override
+					public Void call() throws Exception {
+						IpMessageTransformer transformer = new IpMessageTransformer();
+						RemoteBus bus = new RemoteBus(8081,8082,"localhost").withTransformer(transformer);
+						Protocol protocol = new Protocol(bus);
+						Matrix<String> matrix = protocol.run();
+						for(Map.Entry<Position,String> entry:matrix.getAllPositions().entrySet()) {
+							frame.drawBlockAtPosition(threeLast(entry.getValue()),entry.getKey());
+						}
+						return null;
+					}
+					
+				});
 			}
 		});
 
@@ -162,14 +171,14 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 //		service.execute(new TcpBlocksServer(8080,matrix));
 //		service.execute(new UdpBlocksServer(8081,matrix));
 
-		IpMessageTransformer transformer = new IpMessageTransformer();
-		RemoteBus bus = new RemoteBus(8081,8082,"localhost").withTransformer(transformer);
-		Protocol protocol = new Protocol(bus);
-		Matrix<String> matrix = protocol.run();
-		for(Map.Entry<Position,String> entry:matrix.getAllPositions().entrySet()) {
-			frame.drawBlockAtPosition(threeLast(entry.getValue()),entry.getKey());
-		}
-		System.out.println("finished");
+//		IpMessageTransformer transformer = new IpMessageTransformer();
+//		RemoteBus bus = new RemoteBus(8081,8082,"localhost").withTransformer(transformer);
+//		Protocol protocol = new Protocol(bus);
+//		Matrix<String> matrix = protocol.run();
+//		for(Map.Entry<Position,String> entry:matrix.getAllPositions().entrySet()) {
+//			frame.drawBlockAtPosition(threeLast(entry.getValue()),entry.getKey());
+//		}
+//		System.out.println("finished");
 	}
 
 
