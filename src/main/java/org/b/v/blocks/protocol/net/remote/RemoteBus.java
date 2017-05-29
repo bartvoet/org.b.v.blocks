@@ -200,4 +200,8 @@ public class RemoteBus implements Bus {
 		}
 		return messages.get(0);
 	}
+
+	public void close() {
+		this.socket.close();
+	}
 }

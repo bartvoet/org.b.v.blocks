@@ -103,6 +103,7 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 						for(Map.Entry<Position,String> entry:matrix.getAllPositions().entrySet()) {
 							frame.drawBlockAtPosition(threeLast(entry.getValue()),entry.getKey());
 						}
+						bus.close();
 						return null;
 					}
 					
