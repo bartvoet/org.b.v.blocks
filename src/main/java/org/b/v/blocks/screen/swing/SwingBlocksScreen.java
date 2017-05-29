@@ -96,6 +96,10 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 				Executors.newSingleThreadExecutor().submit(new Callable<Void>() {
 					@Override
 					public Void call() throws Exception {
+						frame.setContentPane(new JPanel());
+						frame.getContentPane().setLayout(null);
+
+						
 						IpMessageTransformer transformer = new IpMessageTransformer();
 						RemoteBus bus = new RemoteBus(8081,8082,"localhost").withTransformer(transformer);
 						Protocol protocol = new Protocol(bus);

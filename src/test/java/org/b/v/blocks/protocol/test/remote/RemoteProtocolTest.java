@@ -1,15 +1,12 @@
 package org.b.v.blocks.protocol.test.remote;
 
-import org.b.v.blocks.protocol.Protocol;
-import org.b.v.blocks.protocol.net.remote.IpMessageTransformer;
-import org.b.v.blocks.protocol.net.remote.RemoteBus;
 import org.b.v.blocks.protocol.test.FakeBlockRepo;
 
 public class RemoteProtocolTest {
 	
 
 	public static void main(String[] args) {
-		IpMessageTransformer transformer = new IpMessageTransformer();
+//		IpMessageTransformer transformer = new IpMessageTransformer();
 
 		//block-simulation
 		RemoteMessageBox box = new RemoteMessageBox("localhost",8081);//sends
