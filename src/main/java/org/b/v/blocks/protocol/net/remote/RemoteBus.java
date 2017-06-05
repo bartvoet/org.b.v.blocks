@@ -7,6 +7,7 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -132,7 +133,7 @@ public class RemoteBus implements Bus {
 	
 	@Override
 	public List<Message> waitForMessages(int number, TimeUnit unit, final Filter... filters) {
-		final List<Message> messages = new ArrayList<Message>();
+		final List<Message> messages = Collections.synchronizedList(new ArrayList<Message>());
 		try {
 			socket.setSoTimeout(number);
 			byte[] buf = new byte[256];
@@ -155,11 +156,12 @@ public class RemoteBus implements Bus {
 								boolean applies = true;
 								for(Filter filter : filters) {
 									if(!filter.applies(message)) {
-//										System.out.println("doensn't apply" + message.getKey());
+										System.out.println("doensn't apply" + message.getKey());
 										applies=false;
 									}
 								}
 								if(applies) {
+//									TimeUnit.MILLISECONDS.sleep(5);
 //									System.out.println("adding...");
 									messages.add(message);
 								}

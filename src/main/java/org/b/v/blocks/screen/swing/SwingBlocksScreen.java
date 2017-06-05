@@ -24,6 +24,7 @@ import org.b.v.blocks.core.Matrix;
 import org.b.v.blocks.core.Orientation;
 import org.b.v.blocks.core.Position;
 import org.b.v.blocks.protocol.Protocol;
+import org.b.v.blocks.protocol.net.remote.IpMessageTransformer;
 import org.b.v.blocks.protocol.net.remote.RemoteBus;
 import org.b.v.blocks.screen.BlockPainter;
 
@@ -76,6 +77,7 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 	}
 	
 	private static RemoteBus bus = new RemoteBus(8080,8080);//.withTransformer(new IpMessageTransformer());
+//	private static RemoteBus bus = new RemoteBus(8081,8082).withTransformer(new IpMessageTransformer());
 	
 	private static void initializeTheMenu(JMenuBar menuBar) {
 		JMenu menu = new JMenu("Acties");
