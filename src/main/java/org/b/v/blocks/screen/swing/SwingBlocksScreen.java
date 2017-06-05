@@ -1,6 +1,7 @@
 package org.b.v.blocks.screen.swing;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +25,7 @@ import org.b.v.blocks.core.Matrix;
 import org.b.v.blocks.core.Orientation;
 import org.b.v.blocks.core.Position;
 import org.b.v.blocks.protocol.Protocol;
+import org.b.v.blocks.protocol.ProtocolMessages;
 import org.b.v.blocks.protocol.net.remote.IpMessageTransformer;
 import org.b.v.blocks.protocol.net.remote.RemoteBus;
 import org.b.v.blocks.screen.BlockPainter;
@@ -63,8 +65,30 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					JDialog dialog = new JDialog();
+					dialog.setLayout(new FlowLayout());
+					
 					dialog.setSize(new Dimension(200, 200));
-					dialog.add(new JLabel("TODO: A menu is to be used here to configue the block"));
+					dialog.add(new JLabel("ip-address: " + id));
+					
+					JButton vibrateButton = new JButton("tril");
+					dialog.add(vibrateButton);
+				
+					vibrateButton.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							new ProtocolMessages(bus).vibrate(id);
+						}
+					});
+					
+					JButton stopVibrateButton = new JButton("stop tril");
+					dialog.add(stopVibrateButton);
+				
+					stopVibrateButton.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							new ProtocolMessages(bus).stopVibrate(id);
+						}
+					});
 					dialog.setVisible(true);
 				}
 			});

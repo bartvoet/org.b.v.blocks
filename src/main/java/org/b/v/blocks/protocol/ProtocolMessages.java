@@ -131,7 +131,11 @@ public class ProtocolMessages {
 	}
 	
 	public void vibrate(String id) {
-		bus.sendMessage(id, new  TaskBuilder("tril").attribute("trilniveau", 100).buildJson());
+		bus.sendMessage(id, new  TaskBuilder("tril").attribute("trilNiveau", 100).buildJson());
+	}
+	
+	public void stopVibrate(String id) {
+		bus.sendMessage(id, new  TaskBuilder("endTril").buildJson());
 	}
 	
 	private String taskMessage(String name) {
