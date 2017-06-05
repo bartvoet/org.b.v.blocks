@@ -155,10 +155,12 @@ public class RemoteBus implements Bus {
 								boolean applies = true;
 								for(Filter filter : filters) {
 									if(!filter.applies(message)) {
+//										System.out.println("doensn't apply" + message.getKey());
 										applies=false;
 									}
 								}
 								if(applies) {
+//									System.out.println("adding...");
 									messages.add(message);
 								}
 								
@@ -196,6 +198,7 @@ public class RemoteBus implements Bus {
 	public Message waitForSingleMessage(int number, TimeUnit unit, Filter startsWith) {
 		List<Message> messages = this.waitForMessages(number, unit, startsWith);
 		if(messages.isEmpty()) {
+//			System.out.println("empty");
 			return null;
 		}
 		return messages.get(0);

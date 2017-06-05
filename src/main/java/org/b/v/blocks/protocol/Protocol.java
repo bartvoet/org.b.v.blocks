@@ -1,6 +1,7 @@
 package org.b.v.blocks.protocol;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.b.v.blocks.core.Matrix;
 import org.b.v.blocks.core.Orientation;
@@ -61,18 +62,23 @@ public class Protocol {
 	}
 	
 	private void discoverNeighbours() {
+		try {
+			TimeUnit.SECONDS.sleep(2);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for(String id : ids) {
 			for(Orientation orientation : Orientation.values()) {
 				ProtocolMessages.LedDetection detection = null;
 				do{
 					detection = messages.waitForLedDetection(id, orientation);
+//					if(detection == null) {
+//						System.out.println("detection is null??");
+//					}
 					if(detection != null) {
 						if(!orientation.isOpposite(detection.getCounterOrientation())) {
 							messages.rotate(detection.getId(),  //id, 
-//									orientation.opposite().
-//										calculateRotation(
-//												detection.getCounterOrientation()
-//												)
 									detection.getCounterOrientation()
 									.calculateRotation(
 											orientation.opposite()
