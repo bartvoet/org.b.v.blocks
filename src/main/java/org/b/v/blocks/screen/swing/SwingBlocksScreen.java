@@ -96,7 +96,7 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 						Protocol protocol = new Protocol(bus);
 						Matrix<String> matrix = protocol.run();
 						for(Map.Entry<Position,String> entry:matrix.getAllPositions().entrySet()) {
-							frame.drawBlockAtPosition(threeLast(entry.getValue()),entry.getKey());
+							frame.drawBlockAtPosition((entry.getValue()),entry.getKey());
 						}
 						return null;
 					}
@@ -117,7 +117,7 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 		Insets insets = frame.getInsets();
 		block.button().setBounds(x + insets.left, y + insets.top, width, height);
 		System.out.println(id);
-		block.button().setText(id);
+		block.button().setText(threeLast(id));
 	}
 
 	/**

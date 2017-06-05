@@ -130,6 +130,10 @@ public class ProtocolMessages {
 		bus.sendMessage(id, taskMessage("stopReadPos"));
 	}
 	
+	public void vibrate(String id) {
+		bus.sendMessage(id, new  TaskBuilder("tril").attribute("trilniveau", 100).buildJson());
+	}
+	
 	private String taskMessage(String name) {
 		return new TaskBuilder(name).buildJson();
 		
