@@ -76,7 +76,7 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 
 	}
 	
-	private static RemoteBus bus = new RemoteBus(8081,8082).withTransformer(new IpMessageTransformer());
+	private static RemoteBus bus = new RemoteBus(8081,8082);//.withTransformer(new IpMessageTransformer());
 	
 	private static void initializeTheMenu(JMenuBar menuBar) {
 		JMenu menu = new JMenu("Acties");
