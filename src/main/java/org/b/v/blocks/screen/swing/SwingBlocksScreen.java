@@ -84,7 +84,10 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 		}
 
 	}
-
+	
+	private static IpMessageTransformer transformer = new IpMessageTransformer();
+	private static RemoteBus bus = new RemoteBus(8081,8082,"localhost").withTransformer(transformer);
+	
 	private static void initializeTheMenu(JMenuBar menuBar) {
 		JMenu menu = new JMenu("Acties");
 		menu.setMnemonic(KeyEvent.VK_A);
@@ -100,14 +103,14 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 						frame.getContentPane().setLayout(null);
 
 						
-						IpMessageTransformer transformer = new IpMessageTransformer();
-						RemoteBus bus = new RemoteBus(8081,8082,"localhost").withTransformer(transformer);
+						
+						
 						Protocol protocol = new Protocol(bus);
 						Matrix<String> matrix = protocol.run();
 						for(Map.Entry<Position,String> entry:matrix.getAllPositions().entrySet()) {
 							frame.drawBlockAtPosition(threeLast(entry.getValue()),entry.getKey());
 						}
-						bus.close();
+						//bus.close();
 						return null;
 					}
 					

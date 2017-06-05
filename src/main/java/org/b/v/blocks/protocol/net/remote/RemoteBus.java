@@ -102,14 +102,13 @@ public class RemoteBus implements Bus {
 	
 	public void sendBytes(String ip, String content) {
 		try {
-
-			DatagramSocket socket = new DatagramSocket();
+			//DatagramSocket socket = new DatagramSocket();
 			DatagramPacket packet = 
 					new DatagramPacket(
 							content.getBytes(), content.getBytes().length,
 							InetAddress.getByName(ip), portTx);
 			socket.send(packet);
-			socket.close();
+			//socket.close();
 		} catch (Exception e) {
 			System.out.println("ambetant");
 			throw new RuntimeException(e);
@@ -170,6 +169,7 @@ public class RemoteBus implements Bus {
 						}
 					}
 					catch(Throwable t) {
+						t.printStackTrace();
 						//socket.close();
 					}
 					finally {
