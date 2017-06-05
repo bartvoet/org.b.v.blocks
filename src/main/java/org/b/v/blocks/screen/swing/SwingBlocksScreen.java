@@ -6,17 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
@@ -85,8 +76,7 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 
 	}
 	
-	private static IpMessageTransformer transformer = new IpMessageTransformer();
-	private static RemoteBus bus = new RemoteBus(8081,8082,"localhost").withTransformer(transformer);
+	private static RemoteBus bus = new RemoteBus(8081,8082).withTransformer(new IpMessageTransformer());
 	
 	private static void initializeTheMenu(JMenuBar menuBar) {
 		JMenu menu = new JMenu("Acties");
@@ -101,16 +91,12 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 					public Void call() throws Exception {
 						frame.setContentPane(new JPanel());
 						frame.getContentPane().setLayout(null);
-
-						
-						
 						
 						Protocol protocol = new Protocol(bus);
 						Matrix<String> matrix = protocol.run();
 						for(Map.Entry<Position,String> entry:matrix.getAllPositions().entrySet()) {
 							frame.drawBlockAtPosition(threeLast(entry.getValue()),entry.getKey());
 						}
-						//bus.close();
 						return null;
 					}
 					
