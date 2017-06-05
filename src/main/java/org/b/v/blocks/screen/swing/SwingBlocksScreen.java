@@ -3,6 +3,7 @@ package org.b.v.blocks.screen.swing;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -65,6 +66,9 @@ public class SwingBlocksScreen extends JFrame implements BlockPainter {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					JDialog dialog = new JDialog();
+					dialog.setLocationRelativeTo(button);
+					dialog.setLocation(new Point(200,100));
+
 					dialog.setLayout(new FlowLayout());
 					
 					dialog.setSize(new Dimension(200, 200));
