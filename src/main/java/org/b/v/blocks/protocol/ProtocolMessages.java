@@ -56,10 +56,10 @@ public class ProtocolMessages {
 	}
 	
 	static { 
-		directionTaskNames.put(Orientation.NORTH,"blinkNorth");
-		directionTaskNames.put(Orientation.SOUTH,"blinkSouth");
-		directionTaskNames.put(Orientation.EAST,"blinkEast");
-		directionTaskNames.put(Orientation.WEST,"blinkWest");
+		directionTaskNames.put(Orientation.NORTH,"findNeighbourN");
+		directionTaskNames.put(Orientation.SOUTH,"findNeighbourS");
+		directionTaskNames.put(Orientation.EAST,"findNeighbourO");
+		directionTaskNames.put(Orientation.WEST,"findNeighbourW");
 	}
 
 	private Bus bus;
@@ -76,13 +76,23 @@ public class ProtocolMessages {
 					);
 	}
 	
+	private static Map<String,Orientation> orientationReturns = new LinkedHashMap<String,Orientation>();
+	static {
+		orientationReturns.put("noord",Orientation.NORTH);
+		orientationReturns.put("zuid",Orientation.SOUTH);
+		orientationReturns.put("oost",Orientation.EAST);
+		orientationReturns.put("west",Orientation.WEST);
+		
+	}
+	
 	public LedDetection waitForLedDetection(String id,Orientation orientation) {
 		bus.sendMessage(id, taskMessage(directionTaskNames.get(orientation)));
 		Message message = bus.waitForSingleMessage(750,TimeUnit.MILLISECONDS,Filters.containsKey("ledDetected"));
 		if(message!=null) {
 			@SuppressWarnings("rawtypes")
 			Map result = gson.fromJson(message.getKey(), Map.class);
-			return new LedDetection(message.getIp(),Orientation.valueOf((String)result.get("ledDetected")));
+//			return new LedDetection(message.getIp(),Orientation.valueOf((String)result.get("ledDetected")));
+			return new LedDetection(message.getIp(),orientationReturns.get((String)result.get("ledDetected")));
 		}
 		return null;
 	}
